@@ -13,3 +13,4 @@ end
 
 # Created by `pipx` on 2025-06-26 07:11:48
 set PATH $PATH /home/dalpax/.local/bin
+alias peaclock="peaclock --config-dir ~/.config/peaclock"

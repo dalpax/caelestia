@@ -23,7 +23,7 @@
     "codeium.enableCodeLens": false,
     "typescript.preferences.preferTypeOnlyAutoImports": true,
     "editor.suggestSelection": "recentlyUsedByPrefix",
-    "workbench.iconTheme": "catppuccin-latte",
+    "workbench.iconTheme": "catppuccin-mocha",
     "git.enableSmartCommit": true,
     "codeium.enableConfig": {
         "*": true,
