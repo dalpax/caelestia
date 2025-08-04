@@ -40,5 +40,6 @@
         "editor.defaultFormatter": "charliermarsh.ruff"
     },
     "ruff.lineLength": 120,
-    "python.languageServer": "Pylance"
+    "python.languageServer": "Pylance",
+    "git.confirmSync": false
 }
