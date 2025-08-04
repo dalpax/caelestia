@@ -73,7 +73,6 @@
         "wallpaperDir": "/home/dalpax/Pictures/Wallpapers"
     },
      "services": {
-      "weatherLocation": "10,10",
       "useFahrenheit": false,
       "useTwelveHourClock": false
     },
