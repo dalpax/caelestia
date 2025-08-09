@@ -73,6 +73,7 @@
         "wallpaperDir": "/home/dalpax/Pictures/Wallpapers"
     },
      "services": {
+      "audioIncrement": 0.05,
       "useFahrenheit": false,
       "useTwelveHourClock": false
     },

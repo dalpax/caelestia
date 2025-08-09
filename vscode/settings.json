@@ -4,7 +4,7 @@
     "editor.cursorSmoothCaretAnimation": "on",
     "editor.fontLigatures": true,
     "prettier.tabWidth": 4,
-    "editor.minimap.autohide": true,
+    "editor.minimap.autohide": "mouseover",
     "security.workspace.trust.startupPrompt": "always",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
