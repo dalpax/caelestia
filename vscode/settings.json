@@ -41,5 +41,6 @@
     },
     "ruff.lineLength": 120,
     "python.languageServer": "Pylance",
-    "git.confirmSync": false
+    "git.confirmSync": false,
+    "explorer.confirmDragAndDrop": false
 }

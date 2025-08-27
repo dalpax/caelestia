@@ -1,12 +1,40 @@
 {
+    "appearance": {
+        "anim": {
+            "durations": {
+                "scale": 1
+            }
+        },
+        "font": {
+            "family": {
+                "material": "Material Symbols Rounded",
+                "mono": "JetBrains Mono NF",
+                "sans": "IBM Plex Sans"
+            },
+            "size": {
+                "scale": 1
+            }
+        },
+        "padding": {
+            "scale": 1
+        },
+        "rounding": {
+        	"scale": 1
+        },
+        "spacing": {
+            "scale": 1
+        },
+        "transparency": {
+            "enabled": false,
+            "base": 0.85,
+            "layers": 0.4
+        }
+    },
     "general": {
         "apps": {
             "terminal": ["foot"],
             "audio": ["pavucontrol"]
         }
-    },
-    "background": {
-        "enabled": true
     },
     "bar": {
         "dragThreshold": 20,
