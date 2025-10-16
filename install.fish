@@ -7,13 +7,13 @@ argparse -n 'install.fish' -X 0 \
     'vscode=?!contains -- "$_flag_value" codium code' \
     'discord' \
     'zen' \
-    'paru' \
+    'aur-helper=!contains -- "$_flag_value" yay paru' \
     -- $argv
 or exit
 
 # Print help
 if set -q _flag_h
-    echo 'usage: ./install.sh [-h] [--noconfirm] [--spotify] [--vscode] [--discord] [--paru]'
+    echo 'usage: ./install.sh [-h] [--noconfirm] [--spotify] [--vscode] [--discord] [--aur-helper]'
     echo
     echo 'options:'
     echo '  -h, --help                  show this help message and exit'
@@ -22,7 +22,7 @@ if set -q _flag_h
     echo '  --vscode=[codium|code]      install VSCodium (or VSCode)'
     echo '  --discord                   install Discord (OpenAsar + Equicord)'
     echo '  --zen                       install Zen browser'
-    echo '  --paru                      use paru instead of yay as AUR helper'
+    echo '  --aur-helper=[yay|paru]     the AUR helper to use'
 
     exit
 end
@@ -44,6 +44,10 @@ function input -a text
     _out blue $text $argv[2..]
 end
 
+function sh-read
+    sh -c 'read a && echo -n "$a"' || exit 1
+end
+
 function confirm-overwrite -a path
     if test -e $path -o -L $path
         # No prompt if noconfirm
@@ -53,7 +57,8 @@ function confirm-overwrite -a path
             rm -rf $path
         else
             # Prompt user
-            read -l -p "input '$path already exists. Overwrite? [Y/n] ' -n" confirm || exit 1
+            input "$path already exists. Overwrite? [Y/n] " -n
+            set -l confirm (sh-read)
 
             if test "$confirm" = 'n' -o "$confirm" = 'N'
                 log 'Skipping...'
@@ -71,7 +76,7 @@ end
 
 # Variables
 set -q _flag_noconfirm && set noconfirm '--noconfirm'
-set -q _flag_paru && set -l aur_helper paru || set -l aur_helper yay
+set -q _flag_aur_helper && set -l aur_helper $_flag_aur_helper || set -l aur_helper paru
 set -q XDG_CONFIG_HOME && set -l config $XDG_CONFIG_HOME || set -l config $HOME/.config
 set -q XDG_STATE_HOME && set -l state $XDG_STATE_HOME || set -l state $HOME/.local/state
 
@@ -92,14 +97,16 @@ log 'Before continuing, please ensure you have made a backup of your config dire
 # Prompt for backup
 if ! set -q _flag_noconfirm
     log '[1] Two steps ahead of you!  [2] Make one for me please!'
-    read -l -p "input '=> ' -n" choice || exit 1
+    input '=> ' -n
+    set -l choice (sh-read)
 
     if contains -- "$choice" 1 2
         if test $choice = 2
             log "Backing up $config..."
 
             if test -e $config.bak -o -L $config.bak
-                read -l -p "input 'Backup already exists. Overwrite? [Y/n] ' -n" overwrite || exit 1
+                input 'Backup already exists. Overwrite? [Y/n] ' -n
+                set -l overwrite (sh-read)
 
                 if test "$overwrite" = 'n' -o "$overwrite" = 'N'
                     log 'Skipping...'
@@ -132,16 +139,25 @@ if ! pacman -Q $aur_helper &> /dev/null
     rm -rf $aur_helper
 
     # Setup
-    $aur_helper -Y --gendb
-    $aur_helper -Y --devel --save
+    if test $aur_helper = yay
+        $aur_helper -Y --gendb
+        $aur_helper -Y --devel --save
+    else
+        $aur_helper --gendb
+    end
 end
-
-# Install metapackage for deps
-log 'Installing metapackage...'
-$aur_helper -S --needed caelestia-meta $noconfirm
 
 # Cd into dir
 cd (dirname (status filename)) || exit 1
+
+# Install metapackage for deps
+log 'Installing metapackage...'
+if test $aur_helper = yay
+    $aur_helper -Bi . $noconfirm
+else
+    $aur_helper -Ui $noconfirm
+end
+fish -c 'rm -f caelestia-meta-*.pkg.tar.zst' 2> /dev/null
 
 # Install hypr* configs
 if confirm-overwrite $config/hypr

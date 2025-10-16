@@ -33,6 +33,9 @@
     "[c]": {
         "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     },
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
     "doxdocgen.generic.boolReturnsTrueFalse": false,
     "terminal.integrated.enableMultiLinePasteWarning": "never",
     "qt-qml.qmlls.additionalImportPaths": ["/usr/lib/qt6/qml"],
@@ -41,6 +44,7 @@
     },
     "ruff.lineLength": 120,
     "python.languageServer": "Pylance",
-    "git.confirmSync": false,
-    "explorer.confirmDragAndDrop": false
+    "editor.inlayHints.enabled": "off",
+    "qt-qml.qmlls.customExePath": "/usr/bin/qmlls6",
+    "qt-qml.doNotAskForQmllsDownload": true
 }
