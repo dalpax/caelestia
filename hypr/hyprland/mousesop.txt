@@ -1,0 +1,13 @@
+new mouse?
+
+run
+hyprctl devices
+
+find the mouse name, e.g.
+Mouse at 55ddf8489610:
+		msi-msi-gm20-elite-
+			default speed: 0.00000
+			scroll factor: -1.00
+
+take that mouse name and add it to input.conf in hypr/hyprland
+adjust sens as necessary

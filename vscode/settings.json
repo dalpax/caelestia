@@ -11,7 +11,6 @@
     "prettier.printWidth": 120,
     "prettier.arrowParens": "avoid",
     "workbench.colorTheme": "Caelestia",
-    "diffEditor.hideUnchangedRegions.enabled": true,
     "workbench.list.smoothScrolling": true,
     "editor.smoothScrolling": true,
     "terminal.integrated.smoothScrolling": true,
@@ -47,5 +46,11 @@
     "editor.inlayHints.enabled": "off",
     "qt-qml.qmlls.customExePath": "/usr/bin/qmlls6",
     "qt-qml.doNotAskForQmllsDownload": true,
-    "git.confirmSync": false
+    "git.confirmSync": false,
+    "c-cpp-compile-run.c-linker-flags": "-lm",
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "c-cpp-compile-run.output-location": "${workspaceFolder}",
+    "claudeCode.preferredLocation": "panel",
+    "claudeCode.environmentVariables": [],
+    "claudeCode.allowDangerouslySkipPermissions": true
 }
