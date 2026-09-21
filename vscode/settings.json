@@ -52,5 +52,9 @@
     "c-cpp-compile-run.output-location": "${workspaceFolder}",
     "claudeCode.preferredLocation": "panel",
     "claudeCode.environmentVariables": [],
-    "claudeCode.allowDangerouslySkipPermissions": true
+    "claudeCode.allowDangerouslySkipPermissions": true,
+    "python.createEnvironment.trigger": "off",
+    "chatgpt.localeOverride": "en-US",
+    "explorer.confirmDragAndDrop": false,
+    "chatgpt.followUpQueueMode": "steer"
 }
