@@ -9,5 +9,6 @@ Mouse at 55ddf8489610:
 			default speed: 0.00000
 			scroll factor: -1.00
 
-take that mouse name and add it to input.conf in hypr/hyprland
+take that mouse name and add an hl.device({ name = "...", sensitivity = X })
+line to ~/.config/caelestia/hypr-user.lua (NOT hypr/hyprland/input.lua)
 adjust sens as necessary

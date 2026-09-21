@@ -11,5 +11,5 @@ function fish_greeting
     echo '  ░ ▒  ▒   ▒   ▒▒ ░░ ░ ▒  ░░▒ ░       ▒   ▒▒ ░░░   ░▒ ░ '
     echo '  ░ ░  ░   ░   ▒     ░ ░   ░░         ░   ▒    ░    ░   '
     set_color normal
-    fastfetch --key-padding-left 6
+    command -v fastfetch &> /dev/null && fastfetch --key-padding-left 6
 end

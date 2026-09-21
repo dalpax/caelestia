@@ -1,122 +1,52 @@
 # caelestia
 
-This is the main repo of the caelestia dots and contains the user configs for
-apps. This repo also includes an install script to install the entire dots.
+This is the main repo of the Caelestia dotfiles and contains user configs for
+various apps.
 
-## Installation
+> [!IMPORTANT]
+> The legacy `install.fish` script in this repo has been removed in favour
+> of the [CLI][cli-repo]'s install command.
+>
+> If you have an existing installation with the legacy script, please update
+> the CLI and run the install command to complete the migration.
 
-Simply clone this repo and run the install script (you need
-[`fish`](https://github.com/fish-shell/fish-shell) installed).
+> [!IMPORTANT]
+> We have switched to using Lua for the Hyprland config!
+> For everyone with a custom `~/.config/caelestia/hypr-user.conf`
+> or `~/.config/caelestia/hypr-vars.conf`, please convert it to Lua
+> either manually or using one of the available converters online.
+>
+> For more information on using these files, see the [Configuring](#configuring) section.
 
-> [!WARNING]
-> The install script symlinks all configs into place, so you CANNOT
-> move/remove the repo folder once you run the install script. If
-> you do, most apps will not behave properly and some (e.g. Hyprland)
-> will fail to start completely. I recommend cloning the repo to
-> `~/.local/share/caelestia`.
+## Installation (Arch Linux)
 
-The install script has some options for installing configs for some apps.
-
-```
-$ ./install.fish -h
-usage: ./install.sh [-h] [--noconfirm] [--spotify] [--vscode] [--discord] [--aur-helper]
-
-options:
-  -h, --help                  show this help message and exit
-  --noconfirm                 do not confirm package installation
-  --spotify                   install Spotify (Spicetify)
-  --vscode=[codium|code]      install VSCodium (or VSCode)
-  --discord                   install Discord (OpenAsar + Equicord)
-  --zen                       install Zen browser
-  --aur-helper=[yay|paru]     the AUR helper to use
-```
+Install the CLI from the AUR, then run `caelestia install`.
 
 For example:
 
 ```sh
-git clone https://github.com/caelestia-dots/caelestia.git ~/.local/share/caelestia
-~/.local/share/caelestia/install.fish
+paru -S caelestia-cli
+caelestia install
 ```
 
 ### Manual installation
 
-Dependencies:
+Clone this repo, then go through [the manifest](/manifest.toml) and install all packages from the
+components that you want to enable, then copy all the entries from those components.
 
--   hyprland
--   xdg-desktop-portal-hyprland
--   xdg-desktop-portal-gtk
--   hyprpicker
--   wl-clipboard
--   cliphist
--   inotify-tools
--   app2unit
--   wireplumber
--   trash-cli
--   foot
--   fish
--   fastfetch
--   starship
--   btop
--   jq
--   eza
--   adw-gtk-theme
--   papirus-icon-theme
--   qtengine-git
--   ttf-jetbrains-mono-nerd
-
-Install all dependencies and follow the installation guides of the
-[shell](https://github.com/caelestia-dots/shell) and [cli](https://github.com/caelestia-dots/cli)
-to install them.
-
-> [!TIP]
-> If on Arch or an Arch-based distro, there is a meta package available [in this repository](PKGBUILD)
-> that pulls in all dependencies. It can be installed through the install script, makepkg/pacman, yay,
-> paru, or your preferred AUR helper.
-
-Then copy or symlink the `hypr`, `foot`, `fish`, `fastfetch`, `uwsm` and `btop` folders to the
-`$XDG_CONFIG_HOME` (usually `~/.config`) directory. e.g. `hypr -> ~/.config/hypr`.
-Copy `starship.toml` to `$XDG_CONFIG_HOME/starship.toml`.
-
-#### Installing Spicetify configs:
-
-Follow the Spicetify [installation instructions](https://spicetify.app/docs/advanced-usage/installation),
-copy or symlink the `spicetify` folder to `$XDG_CONFIG_HOME/spicetify` and run
+e.g. for the hyprland component:
 
 ```sh
-spicetify config current_theme caelestia color_scheme caelestia custom_apps marketplace
-spicetify apply
+git clone https://github.com/caelestia-dots/caelestia.git
+cd caelestia
+sudo pacman -S --needed hyprland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ttf-jetbrains-mono-nerd
+mkdir -p $XDG_CONFIG_HOME/hypr
+cp -r hypr/. $XDG_CONFIG_HOME/hypr/
 ```
-
-#### Installing VSCode/VSCodium configs:
-
-Install VSCode or VSCodium, then copy or symlink `vscode/settings.json` and
-`vscode/keybindings.json` into the `$XDG_CONFIG_HOME/Code/User` (or `$XDG_CONFIG_HOME/VSCodium/User`
-if using VSCodium) folder. Then copy or symlink `vscode/flags.conf` to `$XDG_CONFIG_HOME/code-flags.conf`
-(or `$XDG_CONFIG_HOME/codium-flags.conf` if using VSCodium).
-
-Finally, install the extension VSIX from `vscode/caelestia-vscode-integration`.
-
-```sh
-# Use `codium` if using VSCodium
-code --install-extension vscode/caelestia-vscode-integration/caelestia-vscode-integration-*.vsix
-```
-
-#### Installing Zen Browser configs:
-
-Install Zen Browser, then copy or symlink `zen/userChrome.css` to the `chrome` folder in your
-profile of choice in `~/.zen`. e.g. `zen/userChrome.css -> ~/.zen/<profile>/chrome/userChrome.css`.
-
-Now install the native app by copying `zen/native_app/manifest.json` to
-`~/.mozilla/native-messaging-hosts/caelestiafox.json` and replacing the `{{ $lib }}` string in it
-with the absolute path of `~/.local/lib/caelestia` (this must be the absolute path, e.g.
-`/home/user/.local/lib/caelestia`). Then copy or symlink `zen/native_app/app.fish` to
-`~/.local/lib/caelestia/caelestiafox`.
-
-Finally, install the CaelestiaFox extension from [here](https://addons.mozilla.org/en-US/firefox/addon/caelestiafox).
 
 ## Updating
 
-Simply run `yay` to update the AUR packages, then `cd` into the repo directory and run `git pull` to update the configs.
+Use `caelestia update` to perform a full system update and update the dots.
 
 ## Usage
 
@@ -124,20 +54,208 @@ Simply run `yay` to update the AUR packages, then `cd` into the repo directory a
 > These dots do not contain a login manager (for now), so you must install a
 > login manager yourself unless you want to log in from a TTY. I recommend
 > [`greetd`](https://sr.ht/~kennylevinsen/greetd) with
-> [`tuigreet`](https://github.com/apognu/tuigreet), however you can use
+> [`tuigreet`](https://github.com/apognu/tuigreet); however, you can use
 > any login manager you want.
 
-There aren't really any usage instructions... these are a set of dotfiles.
+## Configuring
 
-Here's a list of useful keybinds though:
+> [!CAUTION]
+> You should never modify any files inside `~/.config/hypr/`, as this will cause conflicts during updates to the dots.
+>
+> Any personal changes should be made in `~/.config/caelestia/hypr-user.lua` or `hypr-vars.lua`, as
+> the installation/update workflows never modify these files. Writing your own changes to files in `~/.config/hypr/`
+> will prevent new updates from being applied, and you will have to reconcile conflicts every time you update manually.
 
--   `Super` - open launcher
--   `Super` + `#` - switch to workspace `#`
--   `Super` `Alt` + `#` - move window to workspace `#`
--   `Super` + `T` - open terminal (foot)
--   `Super` + `W` - open browser (zen)
--   `Super` + `C` - open IDE (vscodium)
--   `Super` + `S` - toggle special workspace or close current special workspace
--   `Ctrl` `Alt` + `Delete` - open session menu
--   `Ctrl` `Super` + `Space` - toggle media play state
--   `Ctrl` `Super` `Alt` + `R` - restart the shell
+### hypr-vars.lua
+
+Most default Hyprland values can be modified by overriding variables in `~/.config/caelestia/hypr-vars.lua`. You can use this file to set
+default apps, keybinds, mouse cursor, window decorations, and much more.
+Use the [`variables.lua`](hypr/variables.lua) file as a reference for all available variables and their default values.
+
+Example usage for `hypr-vars.lua`:
+
+```lua
+return {
+  -- Changing default apps:
+  browser          = "zen-browser",    -- Change default browser to Zen
+  editor           = "code",           -- Change default editor to Code
+
+  -- Changing window/decoration properties:
+  blurEnabled      = false,            -- Disable window blur
+  windowBorderSize = 3,                -- Increase window border size (default: 1)
+
+  -- Changing keybinds:
+  kbTerminal       = "SUPER + Return", -- Change the keybind for opening terminal
+}
+```
+
+### hypr-user.lua
+
+You can put any custom Hyprland configuration in `~/.config/caelestia/hypr-user.lua`. This file is loaded at the end of the Hyprland
+loading sequence. This allows you to customise the behavior of Hyprland outside of the premade configs, including monitor layout, additional
+keybinds, and window rules. It is preferable to use `hypr-vars.lua` for changes to options that the dots already manage
+(e.g. keybinds, window borders, etc.). Still, for configuration that isn't covered by dots or needs to be managed outside variables,
+any changes should be made in `hypr-user.lua`.
+You can read more about configuring Hyprland on their [wiki](https://wiki.hypr.land/Configuring/Start/).
+
+### Additional configuration
+
+Caelestia is a multifaceted ecosystem comprising the dotfiles (this repo), the [shell][shell-repo], and the [CLI][cli-repo].
+The shell’s configuration is managed by `~/.config/caelestia/shell.json`, which modifies the shell’s behavior.
+The CLI config file (`~/.config/caelestia/cli.json`) lets you adjust the CLI’s theming and handling of special workspaces.
+You can find more information on configuring the shell and the CLI in their respective repos.
+
+## Default keybinds
+
+> [!TIP]
+> All keybinds can be customised by overriding their corresponding variables in `hypr-vars.lua` (excluding the shell restart/kill binds).
+> See [Configuring](#configuring) for more information.
+
+### Launcher
+
+| Keybind                   | Action        |
+| ------------------------- | ------------- |
+| `Super` (press & release) | Open launcher |
+
+---
+
+### Workspaces
+
+| Keybind                                                                                | Action                               |
+| -------------------------------------------------------------------------------------- | ------------------------------------ |
+| `Super + 1~9, 0`                                                                       | Go to workspace 1~10                 |
+| `Super + Alt + 1~9, 0`                                                                 | Move window to workspace 1~10        |
+| `Ctrl + Super + 1~9, 0`                                                                | Go to workspace group (×10)          |
+| `Ctrl + Super + Alt + 1~9, 0`                                                          | Move window to workspace group       |
+| `Super + Alt + S`, `Ctrl + Super + Shift + Up`                                         | Move window to special workspace     |
+| `Ctrl + Super + Shift + Down`                                                          | Move window out of special workspace |
+| `Super + Alt + Scroll Down`, `Super + Alt + Page_Down`, `Ctrl + Super + Shift + Right` | Move window to next workspace        |
+| `Super + Alt + Scroll Up`, `Super + Alt + Page_Up`, `Ctrl + Super + Shift + Left`      | Move window to previous workspace    |
+| `Super + Scroll Down`, `Ctrl + Super + Right`, `Super + Page_Down`                     | Go to next workspace                 |
+| `Super + Scroll Up`, `Ctrl + Super + Left`, `Super + Page_Up`                          | Go to previous workspace             |
+| `Ctrl + Super + Scroll Down`                                                           | Go to next workspace group           |
+| `Ctrl + Super + Scroll Up`                                                             | Go to previous workspace group       |
+
+---
+
+### Window groups
+
+| Keybind                    | Action                         |
+| -------------------------- | ------------------------------ |
+| `Alt + Tab`                | Go to next window in group     |
+| `Shift + Alt + Tab`        | Go to previous window in group |
+| `Ctrl + Alt + Tab`         | Go to next group               |
+| `Ctrl + Shift + Alt + Tab` | Go to previous group           |
+| `Super + U`                | Move window out of group       |
+| `Super + Comma`            | Toggle group                   |
+| `Super + Shift + Comma`    | Lock active group              |
+
+---
+
+### Window actions
+
+| Keybind                                       | Action                                       |
+| --------------------------------------------- | -------------------------------------------- |
+| `Super + Minus`, `Super + Alt + Left`         | Decrease window width                        |
+| `Super + Equal`, `Super + Alt + Right`        | Increase window width                        |
+| `Super + Shift + Minus`, `Super + Alt + Up`   | Decrease window height                       |
+| `Super + Shift + Minus`, `Super + Alt + Down` | Increase window height                       |
+| `Super + Left/Right/Up/Down`                  | Focus window in direction                    |
+| `Super + Shift + Left/Right/Up/Down`          | Move window in direction                     |
+| `Super + LMB drag`, `Super + Z + LMB`         | Move window (drag)                           |
+| `Super + RMB drag`, `Super + X + LMB`         | Resize window (drag)                         |
+| `Ctrl + Super + Backslash`                    | Center window                                |
+| `Ctrl + Super + Alt + Backslash`              | Resize window to 55×70% of screen and center |
+| `Super + Alt + Backslash`                     | Picture-in-picture mode                      |
+| `Super + P`                                   | Pin window                                   |
+| `Super + F`                                   | Fullscreen window                            |
+| `Super + Alt + F`                             | Fullscreen window (bordered)                 |
+| `Super + Alt + Space`                         | Toggle floating for window                   |
+| `Super + Q`                                   | Close window                                 |
+
+---
+
+### Special workspace toggles
+
+| Keybind                 | Action                          |
+| ----------------------- | ------------------------------- |
+| `Super + S`             | Toggle special workspace        |
+| `Ctrl + Shift + Escape` | Toggle system monitor workspace |
+| `Super + M`             | Toggle music workspace          |
+| `Super + D`             | Toggle communication workspace  |
+| `Super + R`             | Toggle todo workspace           |
+
+---
+
+### Applications
+
+| Keybind          | Action                                |
+| ---------------- | ------------------------------------- |
+| `Super + T`      | Terminal (default: foot)              |
+| `Super + W`      | Browser (default: firefox)            |
+| `Super + C`      | Editor (default: codium)              |
+| `Super + E`      | File explorer (default: thunar)       |
+| `Ctrl + Alt + V` | Audio settings (default: pwvucontrol) |
+
+---
+
+### Utilities
+
+| Keybind                   | Action              |
+| ------------------------- | ------------------- |
+| `Print`                   | Screenshot          |
+| `Super + Shift + S`       | Screenshot (freeze) |
+| `Super + Shift + Alt + S` | Screenshot (region) |
+| `Ctrl + Alt + R`          | Record fullscreen   |
+| `Super + Alt + R`         | Record with sound   |
+| `Super + Shift + Alt + R` | Record region       |
+| `Super + Shift + C`       | Color picker        |
+
+---
+
+### Media
+
+| Keybind                    | Action         |
+| -------------------------- | -------------- |
+| `Ctrl + Super + Space`     | Play/pause     |
+| `Ctrl + Super + Equal`     | Next track     |
+| `Ctrl + Super + Minus`     | Previous track |
+| `Ctrl + Super + Backspace` | Stop playback  |
+| `Super + Shift + M`        | Mute volume    |
+
+---
+
+### Miscellaneous
+
+| Keybind               | Action                    |
+| --------------------- | ------------------------- |
+| `Ctrl + Alt + Delete` | Open shell session menu   |
+| `Super + N`           | Toggle shell sidebar      |
+| `Ctrl + Alt + C`      | Clear shell notifications |
+| `Super + K`           | Show all shell panels     |
+| `Super + L`           | Lock screen               |
+| `Super + Alt + L`     | Restore shell lockscreen  |
+| `Super + Shift + L`   | Run sleep command         |
+
+---
+
+### Clipboard / Emoji
+
+| Keybind                  | Action                               |
+| ------------------------ | ------------------------------------ |
+| `Super + V`              | Open clipboard history               |
+| `Super + Alt + V`        | Open clipboard history (delete mode) |
+| `Ctrl + Shift + Alt + V` | Paste latest clipboard entry         |
+| `Super + Period`         | Open emoji picker                    |
+
+---
+
+### Shell
+
+| Keybind                    | Action        |
+| -------------------------- | ------------- |
+| `Ctrl + Super + Alt + R`   | Restart shell |
+| `Ctrl + Super + Shift + R` | Kill shell    |
+
+[shell-repo]: https://github.com/caelestia-dots/shell
+[cli-repo]: https://github.com/caelestia-dots/cli
