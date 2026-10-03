@@ -21,3 +21,8 @@ hl.device({ name = "logitech-usb-trackball", sensitivity = 1.0 }) -- libinput ma
 -- Lid close: blank internal panel only (VM + session keep running). Restore on open.
 hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("hyprctl dispatch dpms off eDP-1"), { locked = true })
 hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("hyprctl dispatch dpms on eDP-1"), { locked = true })
+
+-- Counter-Strike 2 (native Linux build reports class "cs2", so it misses
+-- upstream's steam_app_* game-tag patterns). The "game" tag is defined in
+-- hypr/hyprland/rules.lua: opaque + immediate + idle_inhibit.
+hl.window_rule({ match = { class = "cs2" }, tag = "+game" })
