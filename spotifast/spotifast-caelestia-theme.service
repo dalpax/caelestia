@@ -1,0 +1,6 @@
+[Unit]
+Description=Update Spotifast Caelestia palette
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python %h/.config/caelestia/spotifast/sync-theme.py
